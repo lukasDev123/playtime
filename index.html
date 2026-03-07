@@ -1,0 +1,1990 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlayTime — Alejandra De la Rosa | Sexóloga & Terapeuta de Parejas</title>
+  <meta name="description" content="Reconecta con tu placer, tu cuerpo y tus relaciones. Terapias, cursos y masterclass con Alejandra De la Rosa, Sexóloga y Terapeuta de Parejas." />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <!-- Swiper.js -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind Config -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              red: '#FB0300',
+              black: '#050505',
+              dark: '#2B2B2B',
+              gray: '#E6E6E6',
+              beige: '#D6C6B8',
+            }
+          },
+          fontFamily: {
+            playfair: ['Playfair Display', 'serif'],
+            inter: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* ── Base ── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #050505;
+      color: #E6E6E6;
+      overflow-x: hidden;
+    }
+
+    /* ── Custom scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #050505; }
+    ::-webkit-scrollbar-thumb { background: #FB0300; border-radius: 3px; }
+
+    /* ── Selection ── */
+    ::selection { background: #FB0300; color: #fff; }
+
+    /* ── Cursor dot ── */
+    .cursor-dot {
+      width: 8px; height: 8px;
+      background: #FB0300;
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.1s ease;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid rgba(251,3,0,0.5);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transition: all 0.15s ease;
+    }
+
+    /* ── Grain overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* ── Navbar ── */
+    .navbar {
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(5,5,5,0.85);
+      border-bottom: 1px solid rgba(230,230,230,0.05);
+      transition: all 0.4s ease;
+    }
+    .navbar.scrolled {
+      background: rgba(5,5,5,0.97);
+      box-shadow: 0 4px 40px rgba(251,3,0,0.06);
+    }
+    .nav-link {
+      position: relative;
+      color: #E6E6E6;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      transition: color 0.3s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -3px;
+      width: 0; height: 1px;
+      background: #FB0300;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover { color: #fff; }
+    .nav-link:hover::after { width: 100%; }
+
+    /* ── Hero ── */
+    .hero-bg {
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(251,3,0,0.12) 0%, transparent 70%),
+                  radial-gradient(ellipse 60% 40% at 80% 80%, rgba(214,198,184,0.05) 0%, transparent 60%),
+                  #050505;
+    }
+    .hero-line {
+      width: 60px; height: 2px;
+      background: linear-gradient(90deg, #FB0300, transparent);
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      font-weight: 700;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: #FB0300;
+    }
+
+    /* ── Floating particles ── */
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: float linear infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* ── Abstract shapes ── */
+    .shape-ring {
+      border-radius: 50%;
+      border: 1px solid rgba(251,3,0,0.15);
+      animation: spin-slow linear infinite;
+    }
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes spin-slow-reverse {
+      from { transform: rotate(360deg); }
+      to { transform: rotate(0deg); }
+    }
+
+    /* ── Gradient text ── */
+    .gradient-text {
+      background: linear-gradient(135deg, #FB0300 0%, #D6C6B8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Glass card ── */
+    .glass-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: all 0.4s ease;
+    }
+    .glass-card:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(251,3,0,0.25);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(251,3,0,0.08), 0 0 0 1px rgba(251,3,0,0.1);
+    }
+
+    /* ── Service card ── */
+    .service-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, #FB0300, transparent);
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-card:hover {
+      background: rgba(251,3,0,0.04);
+      border-color: rgba(251,3,0,0.2);
+      transform: translateY(-6px);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4), 0 0 40px rgba(251,3,0,0.06);
+    }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      background: #FB0300;
+      color: #fff;
+      font-weight: 500;
+      font-size: 0.875rem;
+      letter-spacing: 0.05em;
+      padding: 0.875rem 2rem;
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid #FB0300;
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      transition: left 0.5s ease;
+    }
+    .btn-primary:hover::before { left: 100%; }
+    .btn-primary:hover {
+      background: #d40200;
+      box-shadow: 0 8px 30px rgba(251,3,0,0.4);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: #E6E6E6;
+      font-weight: 400;
+      font-size: 0.875rem;
+      letter-spacing: 0.05em;
+      padding: 0.875rem 2rem;
+      border-radius: 4px;
+      border: 1px solid rgba(230,230,230,0.2);
+      transition: all 0.3s ease;
+    }
+    .btn-secondary:hover {
+      border-color: rgba(230,230,230,0.5);
+      color: #fff;
+      background: rgba(255,255,255,0.04);
+    }
+    .btn-outline-red {
+      background: transparent;
+      color: #FB0300;
+      font-weight: 500;
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.65rem 1.5rem;
+      border-radius: 3px;
+      border: 1px solid rgba(251,3,0,0.4);
+      transition: all 0.3s ease;
+    }
+    .btn-outline-red:hover {
+      background: #FB0300;
+      color: #fff;
+      border-color: #FB0300;
+      box-shadow: 0 4px 20px rgba(251,3,0,0.3);
+    }
+
+    /* ── Section label ── */
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #FB0300;
+      font-weight: 500;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.15;
+      font-weight: 700;
+    }
+
+    /* ── Swiper custom ── */
+    .swiper-pagination-bullet { background: rgba(230,230,230,0.3) !important; }
+    .swiper-pagination-bullet-active { background: #FB0300 !important; }
+    .swiper-button-next, .swiper-button-prev {
+      color: #FB0300 !important;
+      width: 44px !important; height: 44px !important;
+    }
+    .swiper-button-next::after, .swiper-button-prev::after {
+      font-size: 18px !important;
+      font-weight: 700;
+    }
+
+    /* ── Course card ── */
+    .course-card {
+      background: #0d0d0d;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      overflow: hidden;
+      height: 100%;
+      transition: all 0.4s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .course-card:hover {
+      border-color: rgba(251,3,0,0.3);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(251,3,0,0.1);
+      transform: translateY(-4px);
+    }
+    .course-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      border-radius: 2px;
+      font-weight: 600;
+    }
+
+    /* ── Testimonial card ── */
+    .testimonial-card {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      transition: all 0.4s ease;
+    }
+    .testimonial-card:hover {
+      border-color: rgba(251,3,0,0.2);
+      background: rgba(255,255,255,0.04);
+    }
+    .stars { color: #FB0300; letter-spacing: 2px; }
+
+    /* ── CTA Section ── */
+    .cta-section {
+      background: linear-gradient(135deg, #FB0300 0%, #8B0100 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.06;
+    }
+    .btn-cta-white {
+      background: #fff;
+      color: #FB0300;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      padding: 1rem 2.5rem;
+      border-radius: 4px;
+      border: 2px solid #fff;
+      transition: all 0.3s ease;
+    }
+    .btn-cta-white:hover {
+      background: transparent;
+      color: #fff;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+    }
+
+    /* ── Scroll reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.8s cubic-bezier(0.25,0.46,0.45,0.94),
+                  transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+    /* ── Stats numbers ── */
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      color: #FB0300;
+      line-height: 1;
+    }
+
+    /* ── Divider line ── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+    }
+
+    /* ── Mobile menu ── */
+    .mobile-menu {
+      background: rgba(5,5,5,0.98);
+      backdrop-filter: blur(20px);
+    }
+
+    /* ── Icon box ── */
+    .icon-box {
+      width: 48px; height: 48px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(251,3,0,0.1);
+      border: 1px solid rgba(251,3,0,0.2);
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+    }
+    .service-card:hover .icon-box {
+      background: rgba(251,3,0,0.2);
+      border-color: rgba(251,3,0,0.4);
+    }
+
+    /* ── Profile image wrapper ── */
+    .profile-frame {
+      position: relative;
+    }
+    .profile-frame::before {
+      content: '';
+      position: absolute;
+      inset: -12px;
+      border-radius: 50%;
+      border: 1px solid rgba(251,3,0,0.2);
+      animation: spin-slow 20s linear infinite;
+    }
+    .profile-frame::after {
+      content: '';
+      position: absolute;
+      inset: -24px;
+      border-radius: 50%;
+      border: 1px dashed rgba(214,198,184,0.15);
+      animation: spin-slow-reverse 30s linear infinite;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: #050505;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .social-link {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      color: #E6E6E6;
+      transition: all 0.3s ease;
+      font-size: 0.85rem;
+    }
+    .social-link:hover {
+      border-color: #FB0300;
+      color: #FB0300;
+      background: rgba(251,3,0,0.08);
+      transform: translateY(-2px);
+    }
+
+    /* ── About section ── */
+    .about-section {
+      background: radial-gradient(ellipse 60% 80% at 100% 50%, rgba(214,198,184,0.04) 0%, transparent 60%), #050505;
+    }
+
+    /* Stagger delays */
+    .delay-100 { transition-delay: 0.1s; }
+    .delay-200 { transition-delay: 0.2s; }
+    .delay-300 { transition-delay: 0.3s; }
+    .delay-400 { transition-delay: 0.4s; }
+    .delay-500 { transition-delay: 0.5s; }
+
+    /* ── Guides section ── */
+    .guide-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+      position: relative;
+    }
+    .guide-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(251,3,0,0.04), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .guide-card:hover {
+      border-color: rgba(251,3,0,0.3);
+      transform: translateY(-5px);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(251,3,0,0.1);
+    }
+    .guide-card:hover::after { opacity: 1; }
+
+    .guide-icon-wrap {
+      width: 56px; height: 56px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(251,3,0,0.1);
+      border: 1px solid rgba(251,3,0,0.2);
+      flex-shrink: 0;
+      transition: all 0.35s ease;
+    }
+    .guide-card:hover .guide-icon-wrap {
+      background: rgba(251,3,0,0.22);
+      border-color: rgba(251,3,0,0.5);
+    }
+
+    .btn-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(251,3,0,0.08);
+      color: #FB0300;
+      border: 1px solid rgba(251,3,0,0.25);
+      border-radius: 6px;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn-download:hover {
+      background: #FB0300;
+      color: #fff;
+      border-color: #FB0300;
+      box-shadow: 0 4px 20px rgba(251,3,0,0.35);
+      transform: translateY(-1px);
+    }
+    .btn-download svg {
+      transition: transform 0.3s ease;
+    }
+    .btn-download:hover svg {
+      transform: translateY(2px);
+    }
+
+    /* Guides hero band */
+    .guides-hero {
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(251,3,0,0.09) 0%, transparent 70%), #070707;
+    }
+
+    /* PDF badge */
+    .pdf-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(251,3,0,0.12);
+      color: #FB0300;
+      border: 1px solid rgba(251,3,0,0.2);
+      border-radius: 4px;
+      padding: 0.2rem 0.6rem;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* Download progress bar */
+    .dl-progress {
+      height: 2px;
+      background: rgba(251,3,0,0.15);
+      border-radius: 1px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .dl-progress-bar {
+      height: 100%;
+      background: #FB0300;
+      border-radius: 1px;
+      width: 0%;
+      transition: width 0.6s ease;
+    }
+
+    /* Nav dropdown */
+    .nav-dropdown {
+      position: relative;
+    }
+    .nav-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 200px;
+      background: rgba(10,10,10,0.97);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 8px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s ease;
+      transform: translateX(-50%) translateY(8px);
+    }
+    .nav-dropdown:hover .nav-dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+    .nav-dropdown-menu a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      color: rgba(230,230,230,0.75);
+      font-size: 0.82rem;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .nav-dropdown-menu a:hover {
+      background: rgba(251,3,0,0.1);
+      color: #fff;
+    }
+    .nav-dropdown-menu a span.dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #FB0300;
+      flex-shrink: 0;
+      opacity: 0.6;
+    }
+    .nav-dropdown-arrow {
+      display: inline-block;
+      margin-left: 3px;
+      font-size: 0.65rem;
+      opacity: 0.5;
+      transition: transform 0.25s ease;
+    }
+    .nav-dropdown:hover .nav-dropdown-arrow {
+      transform: rotate(180deg);
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Custom cursor -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- ══════════════════════════════════════
+       NAVBAR
+  ══════════════════════════════════════ -->
+  <nav class="navbar fixed top-0 left-0 right-0 z-50 px-6 lg:px-12"
+       x-data="{ open: false, scrolled: false }"
+       @scroll.window="scrolled = window.scrollY > 40"
+       :class="scrolled && 'scrolled'">
+    <div class="max-w-7xl mx-auto flex items-center justify-between h-16 lg:h-20">
+
+      <!-- Logo -->
+      <a href="#inicio" class="flex items-center gap-2 flex-shrink-0">
+        <img src="assets/logo.png" alt="PlayTime" class="h-9 lg:h-11 w-auto object-contain" />
+      </a>
+
+      <!-- Desktop nav -->
+      <div class="hidden lg:flex items-center gap-8">
+        <a href="#inicio" class="nav-link">Inicio</a>
+        <a href="#servicios" class="nav-link">Servicios</a>
+        <a href="#cursos" class="nav-link">Cursos</a>
+        <a href="#masterclass" class="nav-link">Masterclass</a>
+        <!-- Guías dropdown -->
+        <div class="nav-dropdown">
+          <a href="#guias" class="nav-link flex items-center gap-1">
+            Guías <span class="nav-dropdown-arrow">▾</span>
+          </a>
+          <div class="nav-dropdown-menu">
+            <a href="assets/guias/guia-reconexion-sexual.pdf" download><span class="dot"></span> Reconexión Sexual</a>
+            <a href="assets/guias/guia-limites-saludables.pdf" download><span class="dot"></span> Límites Saludables</a>
+            <a href="assets/guias/guia-inteligencia-emocional.pdf" download><span class="dot"></span> Inteligencia Emocional</a>
+            <a href="assets/guias/guia-amor-propio.pdf" download><span class="dot"></span> Amor Propio</a>
+            <a href="assets/guias/guia-comunicacion-pareja.pdf" download><span class="dot"></span> Comunicación en Pareja</a>
+            <div style="height:1px;background:rgba(255,255,255,0.06);margin:6px 0;"></div>
+            <a href="#guias"><span class="dot" style="background:#D6C6B8;"></span> Ver todas las guías →</a>
+          </div>
+        </div>
+        <a href="#sobre-mi" class="nav-link">Sobre mí</a>
+        <a href="#contacto" class="nav-link">Contacto</a>
+      </div>
+
+      <!-- CTA -->
+      <div class="hidden lg:flex items-center gap-4">
+        <a href="#reservar" class="btn-primary text-sm">
+          Reservar sesión
+        </a>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button class="lg:hidden text-white p-2" @click="open = !open">
+        <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+        <svg x-show="open" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="mobile-menu lg:hidden"
+         x-show="open"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 -translate-y-4"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100 translate-y-0"
+         x-transition:leave-end="opacity-0 -translate-y-4"
+         @click.away="open = false">
+      <div class="px-6 py-6 flex flex-col gap-4 border-t border-white/5">
+        <a href="#inicio" @click="open=false" class="nav-link py-2 text-base">Inicio</a>
+        <a href="#servicios" @click="open=false" class="nav-link py-2 text-base">Servicios</a>
+        <a href="#cursos" @click="open=false" class="nav-link py-2 text-base">Cursos</a>
+        <a href="#masterclass" @click="open=false" class="nav-link py-2 text-base">Masterclass</a>
+        <a href="#guias" @click="open=false" class="nav-link py-2 text-base">Guías</a>
+        <a href="#sobre-mi" @click="open=false" class="nav-link py-2 text-base">Sobre mí</a>
+        <a href="#contacto" @click="open=false" class="nav-link py-2 text-base">Contacto</a>
+        <a href="#reservar" @click="open=false" class="btn-primary text-center mt-2">Reservar sesión</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════
+       HERO
+  ══════════════════════════════════════ -->
+  <section id="inicio" class="hero-bg relative min-h-screen flex items-center justify-center overflow-hidden">
+
+    <!-- Animated shapes -->
+    <div class="absolute inset-0 pointer-events-none" id="heroShapes">
+      <!-- Big ring -->
+      <div class="shape-ring absolute" style="width:600px;height:600px;top:50%;left:50%;transform:translate(-50%,-50%);animation-duration:40s;"></div>
+      <div class="shape-ring absolute" style="width:400px;height:400px;top:50%;left:50%;transform:translate(-50%,-50%);animation:spin-slow-reverse 30s linear infinite;border-color:rgba(214,198,184,0.08)"></div>
+      <div class="shape-ring absolute" style="width:200px;height:200px;top:50%;left:50%;transform:translate(-50%,-50%);animation-duration:20s;border-color:rgba(251,3,0,0.2)"></div>
+      <!-- Floating dots -->
+      <div class="particle" style="width:3px;height:3px;background:#FB0300;left:20%;animation-duration:12s;animation-delay:0s;"></div>
+      <div class="particle" style="width:2px;height:2px;background:#D6C6B8;left:40%;animation-duration:18s;animation-delay:3s;"></div>
+      <div class="particle" style="width:4px;height:4px;background:rgba(251,3,0,0.5);left:65%;animation-duration:15s;animation-delay:6s;"></div>
+      <div class="particle" style="width:2px;height:2px;background:#E6E6E6;left:80%;animation-duration:22s;animation-delay:1s;"></div>
+      <div class="particle" style="width:3px;height:3px;background:#FB0300;left:10%;animation-duration:19s;animation-delay:8s;"></div>
+      <!-- Accent glow -->
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full" style="background:radial-gradient(circle,rgba(251,3,0,0.07),transparent 70%);"></div>
+    </div>
+
+    <!-- Hero content -->
+    <div class="relative z-10 max-w-5xl mx-auto px-6 lg:px-12 text-center">
+      <!-- Label -->
+      <div class="reveal flex items-center justify-center gap-3 mb-6">
+        <div class="hero-line"></div>
+        <span class="section-label">Sexología · Terapia · Educación</span>
+        <div class="hero-line" style="background:linear-gradient(90deg,transparent,#FB0300)"></div>
+      </div>
+
+      <!-- Title -->
+      <h1 class="reveal delay-100 hero-title text-white mb-6">
+        Reconecta con tu <em>placer</em>,<br/>
+        tu cuerpo y tus<br/>
+        <span class="gradient-text">relaciones</span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="reveal delay-200 text-brand-beige/80 text-lg lg:text-xl max-w-2xl mx-auto mb-10 leading-relaxed font-light">
+        Un espacio seguro y profesional para explorar tu sexualidad, sanar tus vínculos y reconectarte con lo más auténtico de ti.
+      </p>
+
+      <!-- CTAs -->
+      <div class="reveal delay-300 flex flex-wrap items-center justify-center gap-4 mb-16">
+        <a href="#reservar" class="btn-primary text-base">
+          Reservar terapia
+        </a>
+        <a href="#cursos" class="btn-secondary text-base flex items-center gap-2">
+          Explorar cursos
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Stats -->
+      <div class="reveal delay-400 grid grid-cols-3 gap-px bg-white/5 rounded-2xl overflow-hidden max-w-xl mx-auto">
+        <div class="bg-black/40 px-6 py-5 text-center">
+          <div class="stat-number">+500</div>
+          <div class="text-xs text-brand-beige/60 mt-1 tracking-widest uppercase">Pacientes</div>
+        </div>
+        <div class="bg-black/40 px-6 py-5 text-center">
+          <div class="stat-number">10+</div>
+          <div class="text-xs text-brand-beige/60 mt-1 tracking-widest uppercase">Años exp.</div>
+        </div>
+        <div class="bg-black/40 px-6 py-5 text-center">
+          <div class="stat-number">98%</div>
+          <div class="text-xs text-brand-beige/60 mt-1 tracking-widest uppercase">Satisfacción</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+      <span class="text-xs text-brand-beige/40 tracking-widest uppercase">Descubre</span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+      </svg>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════════
+       SOBRE LA PROFESIONAL
+  ══════════════════════════════════════ -->
+  <section id="sobre-mi" class="about-section py-24 lg:py-36">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+
+        <!-- Image column -->
+        <div class="reveal-left order-2 lg:order-1 flex justify-center">
+          <div class="relative">
+            <!-- Outer decorative ring -->
+            <div class="profile-frame">
+              <!-- Placeholder silhouette (professional portrait) -->
+              <div class="relative w-72 h-72 lg:w-96 lg:h-96 rounded-full overflow-hidden"
+                   style="background: linear-gradient(135deg, #1a0a0a 0%, #2B2B2B 60%, #1a1010 100%); border: 2px solid rgba(251,3,0,0.25);">
+                <!-- Elegant placeholder -->
+                <div class="absolute inset-0 flex flex-col items-center justify-end pb-8">
+                  <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-56 h-56 opacity-20">
+                    <circle cx="100" cy="70" r="35" fill="#FB0300"/>
+                    <ellipse cx="100" cy="170" rx="60" ry="50" fill="#FB0300"/>
+                  </svg>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="text-center">
+                    <div style="font-family:'Playfair Display',serif; font-size:3rem; color:rgba(251,3,0,0.5); font-style:italic;">A</div>
+                    <div class="text-xs text-brand-beige/30 tracking-widest uppercase mt-1">Foto profesional</div>
+                  </div>
+                </div>
+                <!-- Red glow overlay -->
+                <div class="absolute inset-0 rounded-full" style="background:radial-gradient(circle at 40% 40%, rgba(251,3,0,0.08), transparent 70%)"></div>
+              </div>
+            </div>
+
+            <!-- Floating badge -->
+            <div class="absolute -bottom-4 -right-4 lg:bottom-4 lg:-right-8 glass-card rounded-xl px-5 py-4 border border-white/10 z-20">
+              <div class="flex items-center gap-3">
+                <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                <div>
+                  <div class="text-white text-sm font-medium">Sesiones disponibles</div>
+                  <div class="text-brand-beige/60 text-xs">Online & Presencial</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Credential badge -->
+            <div class="absolute -top-2 -left-6 lg:-left-10 glass-card rounded-xl px-5 py-4 border border-brand-red/20 z-20">
+              <div class="text-center">
+                <div class="text-brand-red font-bold text-lg">10+</div>
+                <div class="text-brand-beige/60 text-xs">Años de<br/>experiencia</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text column -->
+        <div class="order-1 lg:order-2">
+          <div class="reveal mb-4">
+            <span class="section-label">Sobre la profesional</span>
+          </div>
+          <h2 class="reveal delay-100 section-title text-white mb-2">
+            Alejandra<br/>
+            <span class="gradient-text">De la Rosa</span>
+          </h2>
+          <div class="reveal delay-100 flex items-center gap-3 mb-8 mt-3">
+            <div class="text-brand-beige/60 text-sm tracking-widest uppercase">Sexóloga · Terapeuta de Parejas · Educadora</div>
+          </div>
+
+          <p class="reveal delay-200 text-brand-beige/75 leading-relaxed mb-5 font-light">
+            Soy Alejandra De la Rosa, sexóloga clínica y terapeuta de parejas con más de 10 años acompañando a personas en su proceso de reconexión con el placer, la identidad y la intimidad.
+          </p>
+          <p class="reveal delay-300 text-brand-beige/65 leading-relaxed mb-8 font-light">
+            Mi enfoque combina la psicología contemporánea, la educación sexual consciente y la terapia integrativa para crear un espacio de transformación genuina. Creo profundamente en que una vida sexual y emocional plena es un derecho fundamental.
+          </p>
+
+          <!-- Tags / credentials -->
+          <div class="reveal delay-300 flex flex-wrap gap-2 mb-8">
+            <span class="px-3 py-1.5 text-xs border border-white/10 rounded-full text-brand-beige/70 hover:border-brand-red/30 transition-colors">Sexología Clínica</span>
+            <span class="px-3 py-1.5 text-xs border border-white/10 rounded-full text-brand-beige/70 hover:border-brand-red/30 transition-colors">Terapia de Parejas</span>
+            <span class="px-3 py-1.5 text-xs border border-white/10 rounded-full text-brand-beige/70 hover:border-brand-red/30 transition-colors">Educación Sexual</span>
+            <span class="px-3 py-1.5 text-xs border border-white/10 rounded-full text-brand-beige/70 hover:border-brand-red/30 transition-colors">Autogestión Emocional</span>
+            <span class="px-3 py-1.5 text-xs border border-white/10 rounded-full text-brand-beige/70 hover:border-brand-red/30 transition-colors">Inteligencia Erótica</span>
+          </div>
+
+          <div class="reveal delay-400 flex gap-4">
+            <a href="#sobre-mi" class="btn-primary">Conocer más</a>
+            <a href="#reservar" class="btn-secondary">Agendar sesión</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════════
+       CURSOS & MASTERCLASS (Swiper)
+  ══════════════════════════════════════ -->
+  <section id="cursos" class="py-24 lg:py-36 overflow-hidden" style="background:#080808;">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <!-- Header -->
+      <div class="text-center mb-16 reveal">
+        <span class="section-label block mb-4">Formación & Programas</span>
+        <h2 class="section-title text-white mb-5">
+          Cursos, Masterclass<br/>
+          <span class="gradient-text">& Programas</span>
+        </h2>
+        <p class="text-brand-beige/60 max-w-xl mx-auto font-light">
+          Programas diseñados para transformar tu vida erótica, emocional y relacional desde adentro hacia afuera.
+        </p>
+      </div>
+
+      <!-- Swiper -->
+      <div class="reveal swiper coursesSwiper pb-14">
+        <div class="swiper-wrapper">
+
+          <!-- Card 1 -->
+          <div class="swiper-slide">
+            <div class="course-card">
+              <div class="h-48 flex items-center justify-center relative overflow-hidden" style="background:linear-gradient(135deg,#1a0505,#2B1010);">
+                <div class="absolute inset-0" style="background:radial-gradient(circle at 30% 40%, rgba(251,3,0,0.2),transparent 60%)"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-brand-red opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                </svg>
+              </div>
+              <div class="p-6 flex flex-col flex-grow">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="course-badge bg-brand-red/10 text-brand-red border border-brand-red/20">Curso Online</span>
+                  <span class="text-xs text-brand-beige/40">8 semanas</span>
+                </div>
+                <h3 class="font-playfair text-white text-xl font-semibold mb-3">Reconexión con el Placer</h3>
+                <p class="text-brand-beige/60 text-sm leading-relaxed flex-grow mb-5">
+                  Un viaje profundo hacia tu erotismo interior. Aprende a reconocer y honrar tu placer como una fuente de energía vital y transformación personal.
+                </p>
+                <a href="#reservar" class="btn-outline-red text-center block w-full">Ver programa</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="swiper-slide">
+            <div class="course-card">
+              <div class="h-48 flex items-center justify-center relative overflow-hidden" style="background:linear-gradient(135deg,#0a0a1a,#101028);">
+                <div class="absolute inset-0" style="background:radial-gradient(circle at 70% 30%, rgba(214,198,184,0.1),transparent 60%)"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-brand-beige opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+              </div>
+              <div class="p-6 flex flex-col flex-grow">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="course-badge bg-brand-beige/10 text-brand-beige border border-brand-beige/20">Terapia</span>
+                  <span class="text-xs text-brand-beige/40">Sesiones individuales</span>
+                </div>
+                <h3 class="font-playfair text-white text-xl font-semibold mb-3">Autogestión Emocional</h3>
+                <p class="text-brand-beige/60 text-sm leading-relaxed flex-grow mb-5">
+                  Desarrolla inteligencia emocional, establece límites saludables y construye relaciones más conscientes y plenas.
+                </p>
+                <a href="#reservar" class="btn-outline-red text-center block w-full">Ver programa</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 - Masterclass -->
+          <div class="swiper-slide" id="masterclass">
+            <div class="course-card" style="border-color:rgba(251,3,0,0.2);">
+              <div class="h-48 flex items-center justify-center relative overflow-hidden" style="background:linear-gradient(135deg,#200505,#350808);">
+                <div class="absolute inset-0" style="background:radial-gradient(circle at 50% 50%, rgba(251,3,0,0.25),transparent 60%)"></div>
+                <div class="absolute top-4 right-4">
+                  <span class="course-badge bg-brand-red text-white" style="font-size:0.6rem;">MASTERCLASS</span>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-brand-red opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                </svg>
+              </div>
+              <div class="p-6 flex flex-col flex-grow">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="course-badge bg-brand-red/10 text-brand-red border border-brand-red/30">Masterclass</span>
+                  <span class="text-xs text-brand-beige/40">Grupal / Online</span>
+                </div>
+                <h3 class="font-playfair text-white text-xl font-semibold mb-3">Seduce con Conciencia</h3>
+                <p class="text-brand-beige/60 text-sm leading-relaxed flex-grow mb-5">
+                  Para streamers, modelos webcam y creadoras de contenido adulto. Psicología de la seducción digital, fidelización y límites saludables.
+                </p>
+                <a href="#reservar" class="btn-outline-red text-center block w-full">Ver programa</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="swiper-slide">
+            <div class="course-card">
+              <div class="h-48 flex items-center justify-center relative overflow-hidden" style="background:linear-gradient(135deg,#0a1205,#0f1a08);">
+                <div class="absolute inset-0" style="background:radial-gradient(circle at 60% 40%, rgba(214,198,184,0.08),transparent 60%)"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-brand-beige opacity-25" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 3v1m0 16v1M4.22 4.22l.71.71m12.02 12.02l.71.71M1 12h1m18 0h1M4.22 19.78l.71-.71M18.93 5.93l.71-.71M12 8a4 4 0 100 8 4 4 0 000-8z"/>
+                </svg>
+              </div>
+              <div class="p-6 flex flex-col flex-grow">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="course-badge bg-brand-beige/10 text-brand-beige border border-brand-beige/20">Masterclass</span>
+                  <span class="text-xs text-brand-beige/40">Taller grupal</span>
+                </div>
+                <h3 class="font-playfair text-white text-xl font-semibold mb-3">Volver a Mí</h3>
+                <p class="text-brand-beige/60 text-sm leading-relaxed flex-grow mb-5">
+                  Reconexión interior, comprensión emocional, liberación de bloqueos, amor propio y energía vital. Un taller de transformación profunda.
+                </p>
+                <a href="#reservar" class="btn-outline-red text-center block w-full">Ver programa</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="swiper-slide">
+            <div class="course-card">
+              <div class="h-48 flex items-center justify-center relative overflow-hidden" style="background:linear-gradient(135deg,#0d0510,#150a1a);">
+                <div class="absolute inset-0" style="background:radial-gradient(circle at 40% 60%, rgba(251,3,0,0.12),transparent 60%)"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-brand-red opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                </svg>
+              </div>
+              <div class="p-6 flex flex-col flex-grow">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="course-badge bg-brand-red/10 text-brand-red border border-brand-red/20">Programa de Radio</span>
+                  <span class="text-xs text-brand-beige/40">Colaboraciones</span>
+                </div>
+                <h3 class="font-playfair text-white text-xl font-semibold mb-3">Más Allá del Cuerpo</h3>
+                <p class="text-brand-beige/60 text-sm leading-relaxed flex-grow mb-5">
+                  Sexualidad consciente, relaciones humanas, erotismo e inteligencia emocional. Entrevistas, publicidad y colaboraciones disponibles.
+                </p>
+                <a href="#reservar" class="btn-outline-red text-center block w-full">Ver programa</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="swiper-pagination mt-6"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════════
+       GUÍAS DESCARGABLES
+  ══════════════════════════════════════ -->
+  <section id="guias" class="guides-hero py-24 lg:py-36">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+
+      <!-- Header -->
+      <div class="text-center mb-6 reveal">
+        <span class="section-label block mb-4">Recursos gratuitos</span>
+        <h2 class="section-title text-white mb-5">
+          Guías &amp; <span class="gradient-text">Materiales PDF</span>
+        </h2>
+        <p class="text-brand-beige/60 max-w-xl mx-auto font-light">
+          Descarga gratuitamente estas guías especializadas y comienza tu proceso de transformación desde hoy.
+        </p>
+      </div>
+
+      <!-- Feature pill -->
+      <div class="flex justify-center mb-14 reveal delay-100">
+        <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-full border border-brand-red/20 bg-brand-red/5">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+          </svg>
+          <span class="text-brand-beige/70 text-xs tracking-widest uppercase">Descarga directa · Sin registro · 100% gratuito</span>
+        </div>
+      </div>
+
+      <!-- Guides grid -->
+      <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+        <!-- Guide 1 -->
+        <div class="guide-card reveal">
+          <div class="p-7">
+            <div class="flex items-start justify-between mb-5">
+              <div class="guide-icon-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                </svg>
+              </div>
+              <span class="pdf-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                PDF
+              </span>
+            </div>
+            <div class="text-xs text-brand-beige/40 tracking-widest uppercase mb-2">Sexualidad</div>
+            <h3 class="font-playfair text-white text-lg font-semibold mb-3 leading-snug">Guía de Reconexión Sexual</h3>
+            <p class="text-brand-beige/55 text-sm leading-relaxed mb-5">
+              Descubre cómo reconectarte con tu placer y tu cuerpo de manera consciente. Ejercicios prácticos y reflexiones profundas para recuperar tu vitalidad erótica.
+            </p>
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex flex-wrap gap-2">
+                <span class="text-xs px-2 py-1 rounded border border-white/8 text-brand-beige/40">12 páginas</span>
+                <span class="text-xs px-2 py-1 rounded border border-white/8 text-brand-beige/40">Nivel básico</span>
+              </div>
+            </div>
+            <a href="assets/guias/guia-reconexion-sexual.pdf" download="Guia-Reconexion-Sexual-PlayTime.pdf" class="btn-download w-full justify-center" onclick="animateDownload(this)">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              Descargar guía
+            </a>
+            <div class="dl-progress"><div class="dl-progress-bar"></div></div>
+          </div>
+        </div>
+
+        <!-- Guide 2 -->
+        <div class="guide-card reveal delay-100">
+          <div class="p-7">
+            <div class="flex items-start justify-between mb-5">
+              <div class="guide-icon-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+              </div>
+              <span class="pdf-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                PDF
+              </span>
+            </div>
+            <div class="text-xs text-brand-beige/40 tracking-widest uppercase mb-2">Relaciones</div>
+            <h3 class="font-playfair text-white text-lg font-semibold mb-3 leading-snug">Límites Saludables en Pareja</h3>
+            <p class="text-brand-beige/55 text-sm leading-relaxed mb-5">
+              Aprende a establecer y comunicar límites desde el amor y el respeto. Una guía práctica para construir relaciones más honestas y satisfactorias.
+            </p>
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex flex-wrap gap-2">
+                <span class="text-xs px-2 py-1 rounded border border-white/8 text-brand-beige/40">15 páginas</span>
+                <span class="text-xs px-2 py-1 rounded border border-white/8 text-brand-beige/40">Parejas</span>
+              </div>
+            </div>
+            <a href="assets/guias/guia-limites-saludables.pdf" download="Guia-Limites-Saludables-PlayTime.pdf" class="btn-download w-full justify-center" onclick="animateDownload(this)">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              Descargar guía
+            </a>
+            <div class="dl-progress"><div class="dl-progress-bar"></div></div>
+          </div>
+        </div>
+
+        <!-- Guide 3 -->
+        <div class="guide-card reveal delay-200">
+          <div class="p-7">
+            <div class="flex items-start justify-between mb-5">
+              <div class="guide-icon-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                </svg>
+              </div>
+              <span class="pdf-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                PDF
+              </span>
+            </div>
+            <div class="text-xs text-brand-beige/40 tracking-widest uppercase mb-2">Bienestar emocional</div>
+            <h3 class="font-playfair text-white text-lg font-semibold mb-3 leading-snug">Inteligencia Emocional Erótica</h3>
+            <p class="text-brand-beige/55 text-sm leading-relaxed mb-5">
+              Comprende tus emociones y su conexión con tu vida sexual y afectiva. Herramientas para desarrollar una mayor conciencia emocional en tu intimidad.
+            </p>
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex flex-wrap gap-2">
+                <span class="text-xs px-2 py-1 rounded border border-white/8 text-brand-beige/40">18 páginas</span>
+                <span class="text-xs px-2 py-1 rounded border border-white/8 text-brand-beige/40">Intermedio</span>
+              </div>
+            </div>
+            <a href="assets/guias/guia-inteligencia-emocional.pdf" download="Guia-Inteligencia-Emocional-PlayTime.pdf" class="btn-download w-full justify-center" onclick="animateDownload(this)">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              Descargar guía
+            </a>
+            <div class="dl-progress"><div class="dl-progress-bar"></div></div>
+          </div>
+        </div>
+
+        <!-- Guide 4 -->
+        <div class="guide-card reveal delay-100">
+          <div class="p-7">
+            <div class="flex items-start justify-between mb-5">
+              <div class="guide-icon-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1M4.22 4.22l.71.71m12.02 12.02l.71.71M1 12h1m18 0h1M4.22 19.78l.71-.71M18.93 5.93l.71-.71M12 8a4 4 0 100 8 4 4 0 000-8z"/>
+                </svg>
+              </div>
+              <span class="pdf-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                PDF
+              </span>
+            </div>
+            <div class="text-xs text-brand-beige/40 tracking-widest uppercase mb-2">Autoestima</div>
+            <h3 class="font-playfair text-white text-lg font-semibold mb-3 leading-snug">Amor Propio y Autoestima Erótica</h3>
+            <p class="text-brand-beige/55 text-sm leading-relaxed mb-5">
+              Construye una relación sana y amorosa contigo mismo. Aprende a reconocer y honrar tu valía para vivir tu sexualidad desde la plenitud.
+            </p>
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex flex-wrap gap-2">
+                <span class="text-xs px-2 py-1 rounded border border-white/8 text-brand-beige/40">14 páginas</span>
+                <span class="text-xs px-2 py-1 rounded border border-white/8 text-brand-beige/40">Individual</span>
+              </div>
+            </div>
+            <a href="assets/guias/guia-amor-propio.pdf" download="Guia-Amor-Propio-PlayTime.pdf" class="btn-download w-full justify-center" onclick="animateDownload(this)">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              Descargar guía
+            </a>
+            <div class="dl-progress"><div class="dl-progress-bar"></div></div>
+          </div>
+        </div>
+
+        <!-- Guide 5 -->
+        <div class="guide-card reveal delay-200">
+          <div class="p-7">
+            <div class="flex items-start justify-between mb-5">
+              <div class="guide-icon-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                </svg>
+              </div>
+              <span class="pdf-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                PDF
+              </span>
+            </div>
+            <div class="text-xs text-brand-beige/40 tracking-widest uppercase mb-2">Comunicación</div>
+            <h3 class="font-playfair text-white text-lg font-semibold mb-3 leading-snug">Comunicación en Pareja</h3>
+            <p class="text-brand-beige/55 text-sm leading-relaxed mb-5">
+              Herramientas prácticas para mejorar la comunicación íntima con tu pareja. Aprende a expresar tus necesidades y escuchar desde la empatía.
+            </p>
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex flex-wrap gap-2">
+                <span class="text-xs px-2 py-1 rounded border border-white/8 text-brand-beige/40">16 páginas</span>
+                <span class="text-xs px-2 py-1 rounded border border-white/8 text-brand-beige/40">Parejas</span>
+              </div>
+            </div>
+            <a href="assets/guias/guia-comunicacion-pareja.pdf" download="Guia-Comunicacion-Pareja-PlayTime.pdf" class="btn-download w-full justify-center" onclick="animateDownload(this)">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              Descargar guía
+            </a>
+            <div class="dl-progress"><div class="dl-progress-bar"></div></div>
+          </div>
+        </div>
+
+        <!-- CTA card — more coming -->
+        <div class="guide-card reveal delay-300 flex items-center justify-center" style="min-height:280px;background:rgba(251,3,0,0.03);border-color:rgba(251,3,0,0.12);border-style:dashed;">
+          <div class="text-center p-7">
+            <div class="w-14 h-14 rounded-full border border-dashed border-brand-red/30 flex items-center justify-center mx-auto mb-5">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-brand-red/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/>
+              </svg>
+            </div>
+            <h3 class="font-playfair text-white text-lg font-semibold mb-2">Más guías próximamente</h3>
+            <p class="text-brand-beige/45 text-sm mb-5 leading-relaxed">
+              Nuevos materiales en preparación. Déjame tu contacto y te aviso cuando estén disponibles.
+            </p>
+            <a href="#reservar" class="btn-outline-red text-center">
+              Recibir novedades
+            </a>
+          </div>
+        </div>
+
+      </div><!-- /grid -->
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════════
+       SERVICIOS
+  ══════════════════════════════════════ -->
+  <section id="servicios" class="py-24 lg:py-36" style="background:#060606;">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <!-- Header -->
+      <div class="text-center mb-16 reveal">
+        <span class="section-label block mb-4">Lo que ofrezco</span>
+        <h2 class="section-title text-white mb-5">
+          Servicios & <span class="gradient-text">Especialidades</span>
+        </h2>
+        <p class="text-brand-beige/60 max-w-xl mx-auto font-light">
+          Un catálogo integral de servicios terapéuticos y educativos diseñados para acompañarte en cada etapa de tu proceso.
+        </p>
+      </div>
+
+      <!-- Grid -->
+      <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+        <!-- Service 1 -->
+        <div class="service-card rounded-xl p-7 reveal">
+          <div class="icon-box mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+            </svg>
+          </div>
+          <div class="inline-block text-xs text-brand-red tracking-widest uppercase mb-3 font-medium">Terapia</div>
+          <h3 class="font-playfair text-white text-xl font-semibold mb-3">Terapia Sexual Individual & de Pareja</h3>
+          <p class="text-brand-beige/60 text-sm leading-relaxed mb-4">
+            Aborda bloqueos sexuales, falta de deseo, autoestima erótica, educación sexual consciente y reconexión con el placer.
+          </p>
+          <ul class="space-y-1 mb-5">
+            <li class="text-xs text-brand-beige/50 flex items-center gap-2">
+              <span class="w-1 h-1 rounded-full bg-brand-red flex-shrink-0"></span> Bloqueos & disfunciones sexuales
+            </li>
+            <li class="text-xs text-brand-beige/50 flex items-center gap-2">
+              <span class="w-1 h-1 rounded-full bg-brand-red flex-shrink-0"></span> Autoestima erótica
+            </li>
+            <li class="text-xs text-brand-beige/50 flex items-center gap-2">
+              <span class="w-1 h-1 rounded-full bg-brand-red flex-shrink-0"></span> Terapia individual y de pareja
+            </li>
+          </ul>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-brand-beige/40 border border-white/10 rounded px-2 py-1">Online · Presencial</span>
+            <a href="#reservar" class="btn-outline-red">Reservar</a>
+          </div>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="service-card rounded-xl p-7 reveal delay-100">
+          <div class="icon-box mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+          </div>
+          <div class="inline-block text-xs text-brand-red tracking-widest uppercase mb-3 font-medium">Bienestar</div>
+          <h3 class="font-playfair text-white text-xl font-semibold mb-3">Autogestión Emocional Relacional</h3>
+          <p class="text-brand-beige/60 text-sm leading-relaxed mb-4">
+            Inteligencia emocional, límites saludables, autoestima afectiva y manejo de conflictos para construir relaciones conscientes.
+          </p>
+          <ul class="space-y-1 mb-5">
+            <li class="text-xs text-brand-beige/50 flex items-center gap-2">
+              <span class="w-1 h-1 rounded-full bg-brand-red flex-shrink-0"></span> Dependencia emocional
+            </li>
+            <li class="text-xs text-brand-beige/50 flex items-center gap-2">
+              <span class="w-1 h-1 rounded-full bg-brand-red flex-shrink-0"></span> Límites saludables
+            </li>
+            <li class="text-xs text-brand-beige/50 flex items-center gap-2">
+              <span class="w-1 h-1 rounded-full bg-brand-red flex-shrink-0"></span> Relaciones conscientes
+            </li>
+          </ul>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-brand-beige/40 border border-white/10 rounded px-2 py-1">Online · Presencial</span>
+            <a href="#reservar" class="btn-outline-red">Reservar</a>
+          </div>
+        </div>
+
+        <!-- Service 3 — Masterclass Seduce -->
+        <div class="service-card rounded-xl p-7 reveal delay-200" style="border-color:rgba(251,3,0,0.15);">
+          <div class="icon-box mb-5" style="background:rgba(251,3,0,0.15);border-color:rgba(251,3,0,0.35);">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+            </svg>
+          </div>
+          <div class="flex items-center justify-between mb-3">
+            <div class="inline-block text-xs text-brand-red tracking-widest uppercase font-medium">Masterclass</div>
+            <span class="text-xs bg-brand-red/10 text-brand-red border border-brand-red/20 rounded px-2 py-0.5">Destacado</span>
+          </div>
+          <h3 class="font-playfair text-white text-xl font-semibold mb-3">Seduce con Conciencia</h3>
+          <p class="text-brand-beige/60 text-sm leading-relaxed mb-4">
+            Para streamers, modelos webcam y creadoras de contenido adulto. Psicología de la seducción digital y salud sexual online.
+          </p>
+          <ul class="space-y-1 mb-5">
+            <li class="text-xs text-brand-beige/50 flex items-center gap-2">
+              <span class="w-1 h-1 rounded-full bg-brand-red flex-shrink-0"></span> Fidelización de usuarios
+            </li>
+            <li class="text-xs text-brand-beige/50 flex items-center gap-2">
+              <span class="w-1 h-1 rounded-full bg-brand-red flex-shrink-0"></span> Asesoría personalizada
+            </li>
+            <li class="text-xs text-brand-beige/50 flex items-center gap-2">
+              <span class="w-1 h-1 rounded-full bg-brand-red flex-shrink-0"></span> Programas para agencias
+            </li>
+          </ul>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-brand-beige/40 border border-white/10 rounded px-2 py-1">Grupal · Asesoría</span>
+            <a href="#reservar" class="btn-outline-red">Reservar</a>
+          </div>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="service-card rounded-xl p-7 reveal delay-100">
+          <div class="icon-box mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+            </svg>
+          </div>
+          <div class="inline-block text-xs text-brand-red tracking-widest uppercase mb-3 font-medium">Mentoría</div>
+          <h3 class="font-playfair text-white text-xl font-semibold mb-3">Mentorías para Agencias</h3>
+          <p class="text-brand-beige/60 text-sm leading-relaxed mb-4">
+            Programas especializados para agencias de streamers, managers y reclutadores. Bienestar emocional y desarrollo profesional de modelos.
+          </p>
+          <ul class="space-y-1 mb-5">
+            <li class="text-xs text-brand-beige/50 flex items-center gap-2">
+              <span class="w-1 h-1 rounded-full bg-brand-red flex-shrink-0"></span> Agencias de streamers
+            </li>
+            <li class="text-xs text-brand-beige/50 flex items-center gap-2">
+              <span class="w-1 h-1 rounded-full bg-brand-red flex-shrink-0"></span> Formación de managers
+            </li>
+            <li class="text-xs text-brand-beige/50 flex items-center gap-2">
+              <span class="w-1 h-1 rounded-full bg-brand-red flex-shrink-0"></span> Bienestar de modelos
+            </li>
+          </ul>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-brand-beige/40 border border-white/10 rounded px-2 py-1">B2B · Corporativo</span>
+            <a href="#reservar" class="btn-outline-red">Contactar</a>
+          </div>
+        </div>
+
+        <!-- Service 5 -->
+        <div class="service-card rounded-xl p-7 reveal delay-200">
+          <div class="icon-box mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1M4.22 4.22l.71.71m12.02 12.02l.71.71M1 12h1m18 0h1M4.22 19.78l.71-.71M18.93 5.93l.71-.71M12 8a4 4 0 100 8 4 4 0 000-8z"/>
+            </svg>
+          </div>
+          <div class="inline-block text-xs text-brand-red tracking-widest uppercase mb-3 font-medium">Masterclass</div>
+          <h3 class="font-playfair text-white text-xl font-semibold mb-3">Volver a Mí</h3>
+          <p class="text-brand-beige/60 text-sm leading-relaxed mb-4">
+            Reconexión interior, comprensión emocional, liberación de bloqueos, amor propio y energía vital. Una experiencia transformadora.
+          </p>
+          <ul class="space-y-1 mb-5">
+            <li class="text-xs text-brand-beige/50 flex items-center gap-2">
+              <span class="w-1 h-1 rounded-full bg-brand-red flex-shrink-0"></span> Amor propio profundo
+            </li>
+            <li class="text-xs text-brand-beige/50 flex items-center gap-2">
+              <span class="w-1 h-1 rounded-full bg-brand-red flex-shrink-0"></span> Liberación de bloqueos
+            </li>
+            <li class="text-xs text-brand-beige/50 flex items-center gap-2">
+              <span class="w-1 h-1 rounded-full bg-brand-red flex-shrink-0"></span> Energía vital consciente
+            </li>
+          </ul>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-brand-beige/40 border border-white/10 rounded px-2 py-1">Taller grupal · Online</span>
+            <a href="#reservar" class="btn-outline-red">Reservar</a>
+          </div>
+        </div>
+
+        <!-- Service 6 -->
+        <div class="service-card rounded-xl p-7 reveal delay-300">
+          <div class="icon-box mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+            </svg>
+          </div>
+          <div class="inline-block text-xs text-brand-red tracking-widest uppercase mb-3 font-medium">Radio / Media</div>
+          <h3 class="font-playfair text-white text-xl font-semibold mb-3">Más Allá del Cuerpo</h3>
+          <p class="text-brand-beige/60 text-sm leading-relaxed mb-4">
+            Programa de radio sobre sexualidad consciente, relaciones humanas, erotismo e inteligencia emocional.
+          </p>
+          <ul class="space-y-1 mb-5">
+            <li class="text-xs text-brand-beige/50 flex items-center gap-2">
+              <span class="w-1 h-1 rounded-full bg-brand-red flex-shrink-0"></span> Entrevistas especializadas
+            </li>
+            <li class="text-xs text-brand-beige/50 flex items-center gap-2">
+              <span class="w-1 h-1 rounded-full bg-brand-red flex-shrink-0"></span> Publicidad & sponsorships
+            </li>
+            <li class="text-xs text-brand-beige/50 flex items-center gap-2">
+              <span class="w-1 h-1 rounded-full bg-brand-red flex-shrink-0"></span> Colaboraciones media
+            </li>
+          </ul>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-brand-beige/40 border border-white/10 rounded px-2 py-1">Media · Podcast</span>
+            <a href="#contacto" class="btn-outline-red">Colaborar</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════════
+       TESTIMONIOS
+  ══════════════════════════════════════ -->
+  <section id="testimonios" class="py-24 lg:py-36" style="background:#080808;">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <!-- Header -->
+      <div class="text-center mb-16 reveal">
+        <span class="section-label block mb-4">Testimonios</span>
+        <h2 class="section-title text-white mb-5">
+          Lo que dicen mis <span class="gradient-text">pacientes</span>
+        </h2>
+        <p class="text-brand-beige/60 max-w-xl mx-auto font-light">
+          Cada historia es única. Estas son algunas de las transformaciones que hemos vivido juntos.
+        </p>
+      </div>
+
+      <!-- Swiper testimonials -->
+      <div class="reveal swiper testimonialsSwiper pb-14">
+        <div class="swiper-wrapper">
+
+          <!-- Testimonial 1 -->
+          <div class="swiper-slide">
+            <div class="testimonial-card p-8">
+              <div class="stars mb-4 text-lg">★★★★★</div>
+              <p class="text-brand-beige/80 leading-relaxed mb-6 font-light text-sm lg:text-base italic">
+                "Llegué a Alejandra sintiéndome completamente desconectada de mi cuerpo y mi deseo. Tras seis meses de terapia, he reconectado con una parte de mí que pensé había perdido para siempre. Su enfoque es seguro, profesional y profundamente transformador."
+              </p>
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0" style="background:linear-gradient(135deg,#FB0300,#8B0100);">M</div>
+                <div>
+                  <div class="text-white font-medium text-sm">María G.</div>
+                  <div class="text-brand-beige/40 text-xs">Terapia Individual</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Testimonial 2 -->
+          <div class="swiper-slide">
+            <div class="testimonial-card p-8">
+              <div class="stars mb-4 text-lg">★★★★★</div>
+              <p class="text-brand-beige/80 leading-relaxed mb-6 font-light text-sm lg:text-base italic">
+                "Mi pareja y yo acudimos a Alejandra en un momento de crisis. Hoy nuestra relación es completamente diferente: tenemos herramientas, comunicación real y una intimidad que nunca habíamos conocido. Estamos eternamente agradecidos."
+              </p>
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0" style="background:linear-gradient(135deg,#D6C6B8,#8B7B6B);">C</div>
+                <div>
+                  <div class="text-white font-medium text-sm">Carlos & Andrea</div>
+                  <div class="text-brand-beige/40 text-xs">Terapia de Parejas</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Testimonial 3 -->
+          <div class="swiper-slide">
+            <div class="testimonial-card p-8">
+              <div class="stars mb-4 text-lg">★★★★★</div>
+              <p class="text-brand-beige/80 leading-relaxed mb-6 font-light text-sm lg:text-base italic">
+                "La masterclass 'Seduce con Conciencia' cambió completamente mi forma de entender mi trabajo. Ahora tengo límites claros, manejo emocional y entiendo la psicología detrás de mi audiencia. Alejandra es increíblemente profesional."
+              </p>
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0" style="background:linear-gradient(135deg,#2B2B2B,#555);">V</div>
+                <div>
+                  <div class="text-white font-medium text-sm">Valentina R.</div>
+                  <div class="text-brand-beige/40 text-xs">Masterclass — Creadora de contenido</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Testimonial 4 -->
+          <div class="swiper-slide">
+            <div class="testimonial-card p-8">
+              <div class="stars mb-4 text-lg">★★★★★</div>
+              <p class="text-brand-beige/80 leading-relaxed mb-6 font-light text-sm lg:text-base italic">
+                "El programa 'Volver a Mí' fue una de las experiencias más poderosas de mi vida. Aprendí a amarme de una manera que no creía posible. Alejandra crea un espacio absolutamente seguro donde puedes ser completamente tú."
+              </p>
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0" style="background:linear-gradient(135deg,#FB0300,#5B0100);">S</div>
+                <div>
+                  <div class="text-white font-medium text-sm">Sofía L.</div>
+                  <div class="text-brand-beige/40 text-xs">Masterclass — Volver a Mí</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="swiper-pagination mt-6"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════════
+       RESERVAR SESIÓN
+  ══════════════════════════════════════ -->
+  <section id="reservar" class="py-24 lg:py-36" style="background:#060606;">
+    <div class="max-w-3xl mx-auto px-6 lg:px-12">
+      <div class="glass-card rounded-2xl p-10 lg:p-14 text-center reveal" style="border-color:rgba(251,3,0,0.15);">
+        <span class="section-label block mb-5">Agenda tu sesión</span>
+        <h2 class="font-playfair text-white text-3xl lg:text-4xl font-bold mb-4">
+          Comienza tu proceso<br/>
+          <span class="gradient-text">de transformación</span>
+        </h2>
+        <p class="text-brand-beige/60 mb-10 font-light max-w-xl mx-auto">
+          Una primera sesión de exploración para conocernos y definir el mejor camino para ti. Online o presencial(solo en Caracas).
+        </p>
+
+        <!-- Contact form -->
+        <form id="contactForm" onsubmit="handleFormSubmit(event)" class="text-left space-y-4">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs text-brand-beige/50 mb-2 tracking-widest uppercase">Nombre</label>
+              <input type="text" placeholder="Tu nombre completo" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 text-sm focus:outline-none focus:border-brand-red/50 transition-colors" required />
+            </div>
+            <div>
+              <label class="block text-xs text-brand-beige/50 mb-2 tracking-widest uppercase">Email</label>
+              <input type="email" placeholder="tu@email.com" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 text-sm focus:outline-none focus:border-brand-red/50 transition-colors" required />
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs text-brand-beige/50 mb-2 tracking-widest uppercase">Servicio de interés</label>
+            <select class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-red/50 transition-colors appearance-none" style="background-color:#0d0d0d;" required>
+              <option value="" disabled selected style="color:#666;">Selecciona un servicio</option>
+              <option value="terapia-individual">Terapia Sexual Individual</option>
+              <option value="terapia-pareja">Terapia de Parejas</option>
+              <option value="autogesion">Autogestión Emocional</option>
+              <option value="masterclass-seduce">Masterclass — Seduce con Conciencia</option>
+              <option value="masterclass-volver">Masterclass — Volver a Mí</option>
+              <option value="mentoria-agencia">Mentoría para Agencias</option>
+              <option value="radio">Programa de Radio</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs text-brand-beige/50 mb-2 tracking-widest uppercase">Mensaje (opcional)</label>
+            <textarea rows="3" placeholder="Cuéntame brevemente qué te trae aquí..." class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 text-sm focus:outline-none focus:border-brand-red/50 transition-colors resize-none"></textarea>
+          </div>
+          <div class="flex gap-4 pt-2">
+            <button type="submit" class="btn-primary flex-1 text-center text-base">
+              Enviar solicitud
+            </button>
+          </div>
+          <p class="text-xs text-brand-beige/30 text-center mt-2">Tu información es 100% confidencial. Te responderé en menos de 24h.</p>
+        </form>
+        <!-- Success message -->
+        <div id="formSuccess" class="hidden text-center py-8">
+          <div class="w-16 h-16 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center mx-auto mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+          <h3 class="font-playfair text-white text-xl mb-2">¡Solicitud enviada!</h3>
+          <p class="text-brand-beige/60 text-sm">Me pondré en contacto contigo en las próximas 24 horas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════════
+       CTA FUERTE
+  ══════════════════════════════════════ -->
+  <section class="cta-section py-24 lg:py-32">
+    <div class="relative z-10 max-w-4xl mx-auto px-6 lg:px-12 text-center">
+      <div class="reveal">
+        <span class="inline-block text-white/60 text-xs tracking-widest uppercase mb-6 font-medium">Tu momento es ahora</span>
+        <h2 class="font-playfair text-white text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 leading-tight">
+          Empieza tu proceso de<br/>
+          <em>transformación</em> hoy
+        </h2>
+        <p class="text-white/70 text-lg mb-10 max-w-xl mx-auto font-light">
+          No hay momento perfecto para empezar. Solo hay este. Tu bienestar sexual y emocional te espera.
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <a href="#reservar" class="btn-cta-white">
+            Reservar sesión ahora
+          </a>
+          <a href="#contacto" class="border border-white/30 text-white px-8 py-4 rounded text-sm font-medium hover:bg-white/10 transition-all">
+            Más información
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       CONTACTO
+  ══════════════════════════════════════ -->
+  <section id="contacto" class="py-24 lg:py-32" style="background:#060606;">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <div class="grid lg:grid-cols-2 gap-16 items-start">
+        <div class="reveal-left">
+          <span class="section-label block mb-4">Contáctame</span>
+          <h2 class="section-title text-white mb-6">
+            Hablemos sobre<br/>
+            <span class="gradient-text">tu proceso</span>
+          </h2>
+          <p class="text-brand-beige/60 font-light leading-relaxed mb-10">
+            Estoy aquí para acompañarte. No importa dónde estés en tu proceso, hay un espacio para ti. Escríbeme y con gusto te oriento.
+          </p>
+          <div class="space-y-5">
+            <a href="mailto:hola@playtime-alejandra.com" class="flex items-center gap-4 group">
+              <div class="icon-box group-hover:bg-brand-red/20 group-hover:border-brand-red/40 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="text-xs text-brand-beige/40 tracking-widest uppercase mb-0.5">Email</div>
+                <div class="text-white text-sm group-hover:text-brand-red transition-colors">hola@playtime-alejandra.com</div>
+              </div>
+            </a>
+            <a href="https://wa.me/1234567890" class="flex items-center gap-4 group">
+              <div class="icon-box group-hover:bg-brand-red/20 group-hover:border-brand-red/40 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="text-xs text-brand-beige/40 tracking-widest uppercase mb-0.5">WhatsApp</div>
+                <div class="text-white text-sm group-hover:text-brand-red transition-colors">+1 (234) 567-8900</div>
+              </div>
+            </a>
+            <div class="flex items-center gap-4">
+              <div class="icon-box">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="text-xs text-brand-beige/40 tracking-widest uppercase mb-0.5">Modalidad</div>
+                <div class="text-white text-sm">Online · Presencial</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social + info -->
+        <div class="reveal-right">
+          <div class="glass-card rounded-2xl p-8 lg:p-10">
+            <h3 class="font-playfair text-white text-xl font-semibold mb-6">Sígueme en redes</h3>
+            <div class="grid grid-cols-2 gap-4 mb-8">
+              <a href="#" class="flex items-center gap-3 p-4 border border-white/5 rounded-xl hover:border-brand-red/20 hover:bg-brand-red/5 transition-all group">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0">
+                  <span class="text-white text-xs font-bold">IG</span>
+                </div>
+                <div>
+                  <div class="text-white text-sm font-medium group-hover:text-brand-red transition-colors">Instagram</div>
+                  <div class="text-brand-beige/40 text-xs">@playtime.alejandra</div>
+                </div>
+              </a>
+              <a href="#" class="flex items-center gap-3 p-4 border border-white/5 rounded-xl hover:border-brand-red/20 hover:bg-brand-red/5 transition-all group">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center flex-shrink-0">
+                  <span class="text-white text-xs font-bold">TW</span>
+                </div>
+                <div>
+                  <div class="text-white text-sm font-medium group-hover:text-brand-red transition-colors">Twitter / X</div>
+                  <div class="text-brand-beige/40 text-xs">@playtime_alej</div>
+                </div>
+              </a>
+              <a href="#" class="flex items-center gap-3 p-4 border border-white/5 rounded-xl hover:border-brand-red/20 hover:bg-brand-red/5 transition-all group">
+                <div class="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center flex-shrink-0">
+                  <span class="text-white text-xs font-bold">YT</span>
+                </div>
+                <div>
+                  <div class="text-white text-sm font-medium group-hover:text-brand-red transition-colors">YouTube</div>
+                  <div class="text-brand-beige/40 text-xs">PlayTime Canal</div>
+                </div>
+              </a>
+              <a href="#" class="flex items-center gap-3 p-4 border border-white/5 rounded-xl hover:border-brand-red/20 hover:bg-brand-red/5 transition-all group">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center flex-shrink-0">
+                  <span class="text-white text-xs font-bold">WA</span>
+                </div>
+                <div>
+                  <div class="text-white text-sm font-medium group-hover:text-brand-red transition-colors">WhatsApp</div>
+                  <div class="text-brand-beige/40 text-xs">Chat directo</div>
+                </div>
+              </a>
+            </div>
+            <!-- Availability note -->
+            <div class="border border-brand-red/15 bg-brand-red/5 rounded-xl p-4 flex items-start gap-3">
+              <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse mt-1.5 flex-shrink-0"></div>
+              <div>
+                <div class="text-white text-sm font-medium mb-1">Agenda disponible</div>
+                <div class="text-brand-beige/60 text-xs">Actualmente con espacios disponibles para nuevos pacientes. Sesiones de lunes a sábado.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════ -->
+  <footer class="py-12 lg:py-16">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <div class="grid md:grid-cols-3 gap-10 mb-10">
+        <!-- Brand -->
+        <div>
+          <img src="assets/logo.png" alt="PlayTime" class="h-10 w-auto object-contain mb-4" />
+          <p class="text-brand-beige/50 text-sm font-light leading-relaxed max-w-xs">
+            Un espacio seguro para reconectarte con tu placer, tu cuerpo y tus relaciones de manera consciente y transformadora.
+          </p>
+        </div>
+        <!-- Links -->
+        <div>
+          <div class="text-xs text-brand-beige/40 tracking-widest uppercase mb-4">Servicios</div>
+          <div class="space-y-2">
+            <a href="#servicios" class="block text-sm text-brand-beige/60 hover:text-brand-red transition-colors">Terapia Individual</a>
+            <a href="#servicios" class="block text-sm text-brand-beige/60 hover:text-brand-red transition-colors">Terapia de Parejas</a>
+            <a href="#cursos" class="block text-sm text-brand-beige/60 hover:text-brand-red transition-colors">Cursos & Masterclass</a>
+            <a href="#servicios" class="block text-sm text-brand-beige/60 hover:text-brand-red transition-colors">Mentorías para Agencias</a>
+          </div>
+        </div>
+        <!-- Social -->
+        <div>
+          <div class="text-xs text-brand-beige/40 tracking-widest uppercase mb-4">Conecta</div>
+          <div class="flex gap-3 mb-6">
+            <a href="#" class="social-link" title="Instagram">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="#" class="social-link" title="Twitter">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="#" class="social-link" title="YouTube">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+            </a>
+            <a href="#" class="social-link" title="WhatsApp">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </a>
+          </div>
+          <a href="#reservar" class="btn-primary text-sm inline-block">Reservar sesión</a>
+        </div>
+      </div>
+      <div class="divider mb-6"></div>
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-brand-beige/30 text-xs">
+          © 2025 PlayTime — Alejandra De la Rosa. Todos los derechos reservados.
+        </p>
+        <div class="flex gap-6">
+          <a href="#" class="text-brand-beige/30 text-xs hover:text-brand-red/70 transition-colors">Política de privacidad</a>
+          <a href="#" class="text-brand-beige/30 text-xs hover:text-brand-red/70 transition-colors">Términos de servicio</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══════════════════════════════════════
+       SCRIPTS
+  ══════════════════════════════════════ -->
+  <script>
+    // ── Custom cursor ──
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      dot.style.left = mouseX - 4 + 'px';
+      dot.style.top  = mouseY - 4 + 'px';
+    });
+
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      ring.style.left = ringX - 18 + 'px';
+      ring.style.top  = ringY - 18 + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        dot.style.transform  = 'scale(2)';
+        ring.style.transform = 'scale(1.5)';
+        ring.style.borderColor = 'rgba(251,3,0,0.8)';
+      });
+      el.addEventListener('mouseleave', () => {
+        dot.style.transform  = 'scale(1)';
+        ring.style.transform = 'scale(1)';
+        ring.style.borderColor = 'rgba(251,3,0,0.5)';
+      });
+    });
+
+    // ── Swiper — Courses ──
+    const coursesSwiper = new Swiper('.coursesSwiper', {
+      slidesPerView: 1,
+      spaceBetween: 24,
+      loop: true,
+      autoplay: { delay: 4000, disableOnInteraction: false },
+      pagination: { el: '.coursesSwiper .swiper-pagination', clickable: true },
+      breakpoints: {
+        640:  { slidesPerView: 2 },
+        1024: { slidesPerView: 3 },
+      }
+    });
+
+    // ── Swiper — Testimonials ──
+    const testimonialsSwiper = new Swiper('.testimonialsSwiper', {
+      slidesPerView: 1,
+      spaceBetween: 24,
+      loop: true,
+      autoplay: { delay: 5000, disableOnInteraction: false },
+      pagination: { el: '.testimonialsSwiper .swiper-pagination', clickable: true },
+      breakpoints: {
+        768: { slidesPerView: 2 },
+      }
+    });
+
+    // ── Scroll reveal ──
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+      revealObserver.observe(el);
+    });
+
+    // ── Form submit ──
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      document.getElementById('contactForm').classList.add('hidden');
+      document.getElementById('formSuccess').classList.remove('hidden');
+    }
+
+    // ── Download animation ──
+    function animateDownload(btn) {
+      const card = btn.closest('.guide-card');
+      const bar = card.querySelector('.dl-progress-bar');
+      if (!bar) return;
+      bar.style.width = '0%';
+      setTimeout(() => { bar.style.width = '100%'; }, 50);
+      const originalHTML = btn.innerHTML;
+      btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Descargando...`;
+      setTimeout(() => {
+        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> ¡Descargado!`;
+        btn.style.background = 'rgba(34,197,94,0.15)';
+        btn.style.color = '#4ade80';
+        btn.style.borderColor = 'rgba(34,197,94,0.3)';
+        setTimeout(() => {
+          btn.innerHTML = originalHTML;
+          btn.style.background = '';
+          btn.style.color = '';
+          btn.style.borderColor = '';
+          bar.style.width = '0%';
+        }, 2500);
+      }, 900);
+    }
+
+    function createParticle() {
+      const container = document.getElementById('heroShapes');
+      if (!container) return;
+      const p = document.createElement('div');
+      p.classList.add('particle');
+      const size = Math.random() * 3 + 1;
+      const colors = ['#FB0300', '#D6C6B8', 'rgba(230,230,230,0.5)'];
+      p.style.cssText = `
+        width:${size}px; height:${size}px;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        left:${Math.random()*100}%;
+        bottom:-10px;
+        animation-duration:${Math.random()*15+10}s;
+        animation-delay:${Math.random()*5}s;
+      `;
+      container.appendChild(p);
+      setTimeout(() => p.remove(), 25000);
+    }
+    setInterval(createParticle, 800);
+  </script>
+</body>
+</html>
