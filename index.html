@@ -696,6 +696,7 @@
         <a href="#cursos" class="nav-link">Cursos</a>
         <a href="#masterclass" class="nav-link">Masterclass</a>
         <a href="#radio" class="nav-link">Radio</a>
+        <a href="#podcast" class="nav-link">podcast</a>
         <!-- Guías dropdown -->
         <div class="nav-dropdown">
           <a href="#guias" class="nav-link flex items-center gap-1">
@@ -1373,6 +1374,750 @@
     </div>
   </div>
 </section>
+ <!-- ══════════════════════════════════════
+       PODCAST — REPRODUCTOR PREMIUM
+  ══════════════════════════════════════ -->
+  <section id="podcast" class="py-24 lg:py-32 relative overflow-hidden">
+
+    <!-- Background ambiance -->
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(251,3,0,0.07) 0%,transparent 65%),radial-gradient(ellipse 40% 40% at 80% 100%,rgba(214,198,184,0.03) 0%,transparent 60%),#050505;pointer-events:none;"></div>
+    <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(251,3,0,0.25),transparent);"></div>
+
+    <style>
+      /* ── Podcast Player Styles ── */
+      .pod-section-bg {
+        background: rgba(255,255,255,0.015);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 20px;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+
+      /* Featured Player */
+      .pod-player-card {
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 16px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s ease;
+      }
+      .pod-player-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(251,3,0,0.08) 0%, transparent 70%);
+        pointer-events: none;
+      }
+      .pod-player-card.playing {
+        border-color: rgba(251,3,0,0.3);
+        box-shadow: 0 0 60px rgba(251,3,0,0.07), 0 0 0 1px rgba(251,3,0,0.1);
+      }
+
+      /* Cover art */
+      .pod-cover {
+        width: 100px;
+        height: 100px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #1a0000 0%, #2b0200 50%, #0a0000 100%);
+        border: 1px solid rgba(251,3,0,0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s ease;
+      }
+      .pod-cover::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 30% 30%, rgba(251,3,0,0.15), transparent 60%);
+      }
+      .pod-cover.spinning {
+        animation: pod-spin 8s linear infinite;
+        border-color: rgba(251,3,0,0.5);
+        box-shadow: 0 0 20px rgba(251,3,0,0.2);
+      }
+      @keyframes pod-spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+
+      /* Progress bar */
+      .pod-progress-track {
+        height: 4px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 2px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: height 0.2s ease;
+      }
+      .pod-progress-track:hover { height: 6px; }
+      .pod-progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #FB0300, #ff4444);
+        border-radius: 2px;
+        transition: width 0.1s linear;
+        position: relative;
+      }
+      .pod-progress-fill::after {
+        content: '';
+        position: absolute;
+        right: -1px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 10px;
+        height: 10px;
+        background: #fff;
+        border-radius: 50%;
+        border: 2px solid #FB0300;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+      }
+      .pod-progress-track:hover .pod-progress-fill::after { opacity: 1; }
+
+      /* Play button */
+      .pod-btn-play {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: #FB0300;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: all 0.25s cubic-bezier(0.34,1.4,0.64,1);
+        position: relative;
+        overflow: hidden;
+      }
+      .pod-btn-play::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+        border-radius: 50%;
+      }
+      .pod-btn-play:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 24px rgba(251,3,0,0.5), 0 4px 16px rgba(0,0,0,0.4);
+      }
+      .pod-btn-play:active { transform: scale(0.95); }
+
+      .pod-btn-sm {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.08);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: all 0.2s ease;
+        color: rgba(230,230,230,0.6);
+      }
+      .pod-btn-sm:hover {
+        background: rgba(251,3,0,0.12);
+        border-color: rgba(251,3,0,0.3);
+        color: #FB0300;
+      }
+
+      /* Track list */
+      .pod-track {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 16px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        position: relative;
+        border: 1px solid transparent;
+      }
+      .pod-track:hover {
+        background: rgba(255,255,255,0.035);
+        border-color: rgba(255,255,255,0.06);
+      }
+      .pod-track.active {
+        background: rgba(251,3,0,0.06);
+        border-color: rgba(251,3,0,0.2);
+        box-shadow: 0 0 20px rgba(251,3,0,0.05);
+      }
+      .pod-track.active:hover {
+        background: rgba(251,3,0,0.09);
+      }
+
+      /* Track number / play indicator */
+      .pod-track-num {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 0.75rem;
+        color: rgba(214,198,184,0.35);
+        font-family: 'Inter', sans-serif;
+        letter-spacing: 0.02em;
+        position: relative;
+      }
+      .pod-track-mini-play {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        color: #FB0300;
+      }
+      .pod-track:hover .pod-track-mini-play { opacity: 1; }
+      .pod-track:hover .pod-track-num-text { opacity: 0; }
+      .pod-track.active .pod-track-mini-play { opacity: 0; }
+      .pod-track.active .pod-track-num-text { opacity: 0; }
+
+      /* Track thumbnail */
+      .pod-track-thumb {
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #1a0000, #2b0200);
+        border: 1px solid rgba(251,3,0,0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: all 0.3s ease;
+        overflow: hidden;
+      }
+      .pod-track.active .pod-track-thumb {
+        border-color: rgba(251,3,0,0.4);
+        box-shadow: 0 0 12px rgba(251,3,0,0.15);
+      }
+
+      /* Equalizer bars */
+      .pod-eq {
+        display: flex;
+        align-items: flex-end;
+        gap: 2px;
+        height: 20px;
+        flex-shrink: 0;
+      }
+      .pod-eq-bar {
+        width: 3px;
+        background: #FB0300;
+        border-radius: 1px;
+        min-height: 3px;
+      }
+      .pod-eq.playing .pod-eq-bar:nth-child(1) { animation: pod-eq1 0.6s ease-in-out infinite alternate; }
+      .pod-eq.playing .pod-eq-bar:nth-child(2) { animation: pod-eq2 0.4s ease-in-out infinite alternate; }
+      .pod-eq.playing .pod-eq-bar:nth-child(3) { animation: pod-eq3 0.5s ease-in-out infinite alternate; }
+      .pod-eq.playing .pod-eq-bar:nth-child(4) { animation: pod-eq4 0.7s ease-in-out infinite alternate; }
+      .pod-eq.playing .pod-eq-bar:nth-child(5) { animation: pod-eq5 0.45s ease-in-out infinite alternate; }
+
+      @keyframes pod-eq1 { from { height: 4px; } to { height: 18px; } }
+      @keyframes pod-eq2 { from { height: 10px; } to { height: 20px; } }
+      @keyframes pod-eq3 { from { height: 6px; } to { height: 14px; } }
+      @keyframes pod-eq4 { from { height: 12px; } to { height: 20px; } }
+      @keyframes pod-eq5 { from { height: 3px; } to { height: 16px; } }
+
+      /* Large equalizer (hero) */
+      .pod-eq-lg {
+        display: flex;
+        align-items: flex-end;
+        gap: 3px;
+        height: 32px;
+      }
+      .pod-eq-lg-bar {
+        width: 4px;
+        background: linear-gradient(180deg, #FB0300, rgba(251,3,0,0.4));
+        border-radius: 2px;
+        min-height: 4px;
+      }
+      .pod-eq-lg.playing .pod-eq-lg-bar:nth-child(1) { animation: pod-eq1 0.6s ease-in-out infinite alternate; }
+      .pod-eq-lg.playing .pod-eq-lg-bar:nth-child(2) { animation: pod-eq2 0.35s ease-in-out infinite alternate; }
+      .pod-eq-lg.playing .pod-eq-lg-bar:nth-child(3) { animation: pod-eq3 0.55s ease-in-out infinite alternate; }
+      .pod-eq-lg.playing .pod-eq-lg-bar:nth-child(4) { animation: pod-eq4 0.7s ease-in-out infinite alternate; }
+      .pod-eq-lg.playing .pod-eq-lg-bar:nth-child(5) { animation: pod-eq5 0.45s ease-in-out infinite alternate; }
+      .pod-eq-lg.playing .pod-eq-lg-bar:nth-child(6) { animation: pod-eq2 0.5s ease-in-out infinite alternate 0.1s; }
+      .pod-eq-lg.playing .pod-eq-lg-bar:nth-child(7) { animation: pod-eq1 0.65s ease-in-out infinite alternate 0.2s; }
+
+      /* Duration/time */
+      .pod-time {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.72rem;
+        color: rgba(214,198,184,0.45);
+        letter-spacing: 0.04em;
+        white-space: nowrap;
+      }
+
+      /* Volume */
+      .pod-volume-track {
+        height: 3px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 2px;
+        cursor: pointer;
+        position: relative;
+      }
+      .pod-volume-fill {
+        height: 100%;
+        background: rgba(230,230,230,0.35);
+        border-radius: 2px;
+        transition: width 0.1s ease;
+      }
+
+      /* Divider between tracks */
+      .pod-track-divider {
+        height: 1px;
+        background: rgba(255,255,255,0.04);
+        margin: 2px 16px;
+      }
+
+      /* Waveform decorative */
+      .pod-waveform {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        height: 40px;
+      }
+      .pod-waveform-bar {
+        width: 3px;
+        background: rgba(251,3,0,0.2);
+        border-radius: 1px;
+        transition: background 0.3s ease;
+      }
+      .pod-waveform-bar.played {
+        background: rgba(251,3,0,0.6);
+      }
+
+      /* Responsive */
+      @media (max-width: 640px) {
+        .pod-cover { width: 72px; height: 72px; border-radius: 8px; }
+        .pod-btn-play { width: 42px; height: 42px; }
+        .pod-track { padding: 12px 10px; gap: 10px; }
+      }
+    </style>
+
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10"
+      x-data="podcastPlayer()"
+      x-init="init()">
+
+      <!-- Section Header -->
+      <div class="mb-12 reveal">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="section-label">Escúchanos</span>
+          <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(251,3,0,0.3),transparent);max-width:60px;"></div>
+        </div>
+        <h2 class="section-title text-white">
+          Podcast <em class="font-playfair italic" style="color:#FB0300;">PlayTime</em>
+        </h2>
+        <p class="text-brand-beige/50 text-sm mt-3 max-w-xl font-light leading-relaxed">
+          Conversaciones sobre sexualidad, placer y bienestar emocional. Nuevos episodios cada semana.
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-5 gap-6 reveal">
+
+        <!-- ── LEFT: Featured Player ── -->
+        <div class="lg:col-span-2">
+          <div class="pod-player-card p-6 lg:p-7 sticky top-24" :class="{ playing: isPlaying }">
+
+            <!-- Cover + waveform area -->
+            <div class="flex items-center gap-5 mb-6">
+              <!-- Cover art -->
+              <div class="pod-cover" :class="{ spinning: isPlaying }">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(251,3,0,0.8)" width="40" height="40">
+                  <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                </svg>
+              </div>
+
+              <!-- Title + eq -->
+              <div class="flex-1 min-w-0">
+                <p class="text-brand-beige/40 text-xs tracking-widest uppercase mb-1 font-medium">Ahora reproduciendo</p>
+                <h3 class="text-white font-semibold text-base leading-snug truncate font-inter" x-text="currentTrack ? currentTrack.title : 'Selecciona un episodio'"></h3>
+                <p class="text-brand-beige/40 text-xs mt-1">PlayTime · Podcast</p>
+
+                <!-- Large equalizer -->
+                <div class="pod-eq-lg mt-3" :class="{ playing: isPlaying }">
+                  <div class="pod-eq-lg-bar" style="height:8px;"></div>
+                  <div class="pod-eq-lg-bar" style="height:20px;"></div>
+                  <div class="pod-eq-lg-bar" style="height:12px;"></div>
+                  <div class="pod-eq-lg-bar" style="height:28px;"></div>
+                  <div class="pod-eq-lg-bar" style="height:16px;"></div>
+                  <div class="pod-eq-lg-bar" style="height:22px;"></div>
+                  <div class="pod-eq-lg-bar" style="height:10px;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="mb-4">
+              <div class="pod-progress-track mb-2 group"
+                @click="seekTo($event)"
+                x-ref="progressBar">
+                <div class="pod-progress-fill"
+                  :style="'width:' + progressPercent + '%'">
+                </div>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="pod-time" x-text="formatTime(currentTime)">0:00</span>
+                <span class="pod-time" x-text="formatTime(duration)">0:00</span>
+              </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <!-- Prev -->
+                <button class="pod-btn-sm" @click="prevTrack()" title="Anterior">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                    <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/>
+                  </svg>
+                </button>
+
+                <!-- Play/Pause main -->
+                <button class="pod-btn-play" @click="togglePlay()" :title="isPlaying ? 'Pausar' : 'Reproducir'">
+                  <template x-if="!isPlaying">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="20" height="20" style="margin-left:2px">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </template>
+                  <template x-if="isPlaying">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="20" height="20">
+                      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    </svg>
+                  </template>
+                </button>
+
+                <!-- Next -->
+                <button class="pod-btn-sm" @click="nextTrack()" title="Siguiente">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                    <path d="M6 18l8.5-6L6 6v12zm2.5-6 5.5 3.9V8.1L8.5 12zM16 6h2v12h-2z"/>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Volume -->
+              <div class="flex items-center gap-2" style="min-width:100px;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(214,198,184,0.4)" width="14" height="14">
+                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+                </svg>
+                <div class="pod-volume-track flex-1"
+                  @click="setVolume($event)"
+                  x-ref="volumeBar">
+                  <div class="pod-volume-fill" :style="'width:' + (volume * 100) + '%'"></div>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(214,198,184,0.4)" width="14" height="14">
+                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Glow pulse when playing -->
+            <div x-show="isPlaying"
+              style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60%;height:1px;background:linear-gradient(90deg,transparent,#FB0300,transparent);box-shadow:0 0 20px 2px rgba(251,3,0,0.3);">
+            </div>
+          </div>
+        </div>
+
+        <!-- ── RIGHT: Track List ── -->
+        <div class="lg:col-span-3">
+          <div class="pod-section-bg p-2">
+
+            <!-- List header -->
+            <div class="flex items-center justify-between px-4 py-3 mb-1">
+              <span class="text-xs text-brand-beige/30 tracking-widest uppercase font-medium">
+                Episodios · <span x-text="tracks.length"></span>
+              </span>
+              <div class="flex items-center gap-1">
+                <div class="w-1.5 h-1.5 rounded-full bg-brand-red animate-pulse" x-show="isPlaying"></div>
+                <span class="text-xs text-brand-beige/30" x-show="isPlaying">En vivo</span>
+              </div>
+            </div>
+
+            <!-- Tracks -->
+            <template x-for="(track, index) in tracks" :key="track.id">
+              <div>
+                <div class="pod-track"
+                  :class="{ active: currentTrack && currentTrack.id === track.id }"
+                  @click="selectTrack(track)">
+
+                  <!-- Number/indicator -->
+                  <div class="pod-track-num">
+                    <span class="pod-track-num-text" x-text="index + 1"></span>
+                    <!-- Mini play icon on hover -->
+                    <span class="pod-track-mini-play">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                        <path d="M8 5v14l11-7z"/>
+                      </svg>
+                    </span>
+                    <!-- Equalizer when active -->
+                    <template x-if="currentTrack && currentTrack.id === track.id">
+                      <div class="pod-eq absolute inset-0 flex items-center justify-center"
+                        :class="{ playing: isPlaying }">
+                        <div class="pod-eq-bar" style="height:6px;"></div>
+                        <div class="pod-eq-bar" style="height:12px;"></div>
+                        <div class="pod-eq-bar" style="height:8px;"></div>
+                        <div class="pod-eq-bar" style="height:14px;"></div>
+                        <div class="pod-eq-bar" style="height:5px;"></div>
+                      </div>
+                    </template>
+                  </div>
+
+                  <!-- Thumbnail -->
+                  <div class="pod-track-thumb">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(251,3,0,0.6)" width="20" height="20">
+                      <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                    </svg>
+                  </div>
+
+                  <!-- Info -->
+                  <div class="flex-1 min-w-0">
+                    <p class="text-white text-sm font-medium leading-snug truncate"
+                      :class="currentTrack && currentTrack.id === track.id ? 'text-white' : 'text-brand-gray/80'"
+                      x-text="track.title"></p>
+                    <p class="text-brand-beige/35 text-xs mt-0.5 truncate" x-text="track.subtitle"></p>
+                  </div>
+
+                  <!-- Duration + EQ indicator -->
+                  <div class="flex flex-col items-end gap-1.5 flex-shrink-0">
+                    <span class="pod-time" x-text="track.durationLabel"></span>
+                    <div x-show="currentTrack && currentTrack.id === track.id">
+                      <template x-if="isPlaying">
+                        <div style="display:flex;align-items:center;gap:3px;height:12px;">
+                          <div style="width:2px;height:12px;background:#FB0300;border-radius:1px;animation:pod-eq1 0.6s ease-in-out infinite alternate;"></div>
+                          <div style="width:2px;height:8px;background:#FB0300;border-radius:1px;animation:pod-eq3 0.4s ease-in-out infinite alternate;"></div>
+                          <div style="width:2px;height:12px;background:#FB0300;border-radius:1px;animation:pod-eq2 0.5s ease-in-out infinite alternate;"></div>
+                        </div>
+                      </template>
+                      <template x-if="!isPlaying">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FB0300" width="12" height="12" style="opacity:0.7">
+                          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                        </svg>
+                      </template>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Divider (not on last item) -->
+                <template x-if="index < tracks.length - 1">
+                  <div class="pod-track-divider"></div>
+                </template>
+              </div>
+            </template>
+
+          </div>
+
+          <!-- Disclaimer -->
+          <p class="text-brand-beige/25 text-xs text-center mt-4 font-light">
+            Los audios deben estar en <code class="text-brand-red/50 bg-brand-red/5 px-1 py-0.5 rounded text-xs">assets/audios/</code> · Formato MP3 recomendado
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Alpine.js Podcast Controller -->
+    <script>
+      function podcastPlayer() {
+        return {
+          tracks: [
+            {
+              id: 1,
+              title: 'Reconectando con tu deseo',
+              subtitle: 'Episodio 1 · Temporada 1',
+              src: 'assets/audios/audio1.mp3',
+              durationLabel: '--:--',
+            },
+            {
+              id: 2,
+              title: 'Comunicación erótica en pareja',
+              subtitle: 'Episodio 2 · Temporada 1',
+              src: 'assets/audios/audio2.mp3',
+              durationLabel: '--:--',
+            },
+            {
+              id: 3,
+              title: 'El cuerpo como lenguaje',
+              subtitle: 'Episodio 3 · Temporada 1',
+              src: 'assets/audios/audio3.mp3',
+              durationLabel: '--:--',
+            },
+            {
+              id: 4,
+              title: 'Sanando el placer después del trauma',
+              subtitle: 'Episodio 4 · Temporada 1',
+              src: 'assets/audios/audio4.mp3',
+              durationLabel: '--:--',
+            },
+            {
+              id: 5,
+              title: 'Más allá del orgasmo',
+              subtitle: 'Episodio 5 · Temporada 1',
+              src: 'assets/audios/audio5.mp3',
+              durationLabel: '--:--',
+            },
+          ],
+
+          currentTrack: null,
+          isPlaying: false,
+          currentTime: 0,
+          duration: 0,
+          progressPercent: 0,
+          volume: 0.8,
+          audio: null,
+          _raf: null,
+
+          init() {
+            this.audio = new Audio();
+            this.audio.volume = this.volume;
+
+            this.audio.addEventListener('loadedmetadata', () => {
+              this.duration = this.audio.duration;
+              if (this.currentTrack) {
+                const idx = this.tracks.findIndex(t => t.id === this.currentTrack.id);
+                if (idx !== -1) {
+                  this.tracks[idx].durationLabel = this.formatTime(this.audio.duration);
+                  this.tracks = [...this.tracks];
+                }
+              }
+            });
+
+            this.audio.addEventListener('ended', () => {
+              this.nextTrack();
+            });
+
+            // Preload durations for tracks
+            this.tracks.forEach((track, i) => {
+              const a = new Audio();
+              a.preload = 'metadata';
+              a.addEventListener('loadedmetadata', () => {
+                this.tracks[i].durationLabel = this.formatTime(a.duration);
+                this.tracks = [...this.tracks];
+              });
+              a.src = track.src;
+            });
+          },
+
+          selectTrack(track) {
+            if (this.currentTrack && this.currentTrack.id === track.id) {
+              this.togglePlay();
+              return;
+            }
+            this.currentTrack = track;
+            this.audio.src = track.src;
+            this.currentTime = 0;
+            this.progressPercent = 0;
+            this.duration = 0;
+            this.audio.load();
+            this.audio.play()
+              .then(() => {
+                this.isPlaying = true;
+                this.startProgress();
+              })
+              .catch(() => {
+                this.isPlaying = false;
+              });
+          },
+
+          togglePlay() {
+            if (!this.currentTrack) {
+              if (this.tracks.length > 0) this.selectTrack(this.tracks[0]);
+              return;
+            }
+            if (this.isPlaying) {
+              this.audio.pause();
+              this.isPlaying = false;
+              this.stopProgress();
+            } else {
+              this.audio.play()
+                .then(() => {
+                  this.isPlaying = true;
+                  this.startProgress();
+                });
+            }
+          },
+
+          nextTrack() {
+            if (!this.currentTrack) {
+              this.selectTrack(this.tracks[0]);
+              return;
+            }
+            const idx = this.tracks.findIndex(t => t.id === this.currentTrack.id);
+            const next = this.tracks[(idx + 1) % this.tracks.length];
+            this.selectTrack(next);
+          },
+
+          prevTrack() {
+            if (!this.currentTrack) {
+              this.selectTrack(this.tracks[0]);
+              return;
+            }
+            if (this.audio.currentTime > 3) {
+              this.audio.currentTime = 0;
+              return;
+            }
+            const idx = this.tracks.findIndex(t => t.id === this.currentTrack.id);
+            const prev = this.tracks[(idx - 1 + this.tracks.length) % this.tracks.length];
+            this.selectTrack(prev);
+          },
+
+          startProgress() {
+            const tick = () => {
+              if (!this.audio.paused) {
+                this.currentTime = this.audio.currentTime;
+                this.duration = this.audio.duration || 0;
+                this.progressPercent = this.duration > 0
+                  ? (this.currentTime / this.duration) * 100
+                  : 0;
+                this._raf = requestAnimationFrame(tick);
+              }
+            };
+            cancelAnimationFrame(this._raf);
+            this._raf = requestAnimationFrame(tick);
+          },
+
+          stopProgress() {
+            cancelAnimationFrame(this._raf);
+          },
+
+          seekTo(event) {
+            if (!this.currentTrack || !this.duration) return;
+            const bar = this.$refs.progressBar;
+            const rect = bar.getBoundingClientRect();
+            const ratio = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+            this.audio.currentTime = ratio * this.duration;
+            this.currentTime = this.audio.currentTime;
+            this.progressPercent = ratio * 100;
+          },
+
+          setVolume(event) {
+            const bar = this.$refs.volumeBar;
+            const rect = bar.getBoundingClientRect();
+            const ratio = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+            this.volume = ratio;
+            this.audio.volume = ratio;
+          },
+
+          formatTime(secs) {
+            if (!secs || isNaN(secs)) return '0:00';
+            const m = Math.floor(secs / 60);
+            const s = Math.floor(secs % 60);
+            return m + ':' + String(s).padStart(2, '0');
+          },
+        };
+      }
+    </script>
+
+  </section>
+
+
   <!-- ══════════════════════════════════════
        SERVICIOS
   ══════════════════════════════════════ -->
@@ -2858,7 +3603,7 @@ Es hora de volver a ser cómplices.
               </a>
 
               <!-- Spotify -->
-              <a href="https://open.spotify.com/show/6eeOG9zeSqmQs7vSyVmFkv?si=82b59ee7d265429b" target="_blank" rel="noopener" class="soc-card">
+              <a href="https://open.spotify.com/show/6eeOG9zeSqmQs7vSyVmFkv" target="_blank" rel="noopener" class="soc-card">
                 <div class="soc-icon-wrap" style="background:linear-gradient(135deg,#1a1a1a 0%,#121212 100%);">
                   <svg viewBox="0 0 24 24" width="26" height="26" fill="#1DB954" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
