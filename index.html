@@ -1072,7 +1072,7 @@
                 <div class="absolute inset-0" style="background:linear-gradient(to bottom,rgba(5,5,5,0) 35%,rgba(5,5,5,0.8) 100%);"></div>
                 <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 0%,rgba(214,198,184,0.12) 0%,transparent 65%);pointer-events:none;"></div>
                 <div class="absolute top-4 right-4">
-                  <span class="course-badge bg-brand-beige/20 text-brand-beige border border-brand-beige/30" style="font-size:0.6rem;box-shadow:0 2px 12px rgba(214,198,184,0.2);">MASTERCLASS</span>
+                  <span class="course-badge bg-brand-red text-white" style="font-size:0.6rem;box-shadow:0 2px 12px rgba(251,3,0,0.45);">MASTERCLASS</span>
                 </div>
                 <div class="absolute bottom-4 left-5">
                   <span class="text-xs text-brand-beige/60 tracking-widest uppercase font-light">Reconexión · Amor propio · Transformación</span>
@@ -1081,7 +1081,7 @@
               <!-- Card body -->
               <div class="p-6 flex flex-col flex-grow">
                 <div class="flex items-center justify-between mb-3">
-                  <span class="course-badge bg-brand-beige/10 text-brand-beige border border-brand-beige/20">Masterclass</span>
+                  <span class="course-badge bg-brand-red/10 text-brand-red border border-brand-red/30">Masterclass</span>
                   <span class="text-xs text-brand-beige/40">Taller grupal</span>
                 </div>
                 <h3 class="font-playfair text-white text-xl font-semibold mb-3">Volver a Mí</h3>
@@ -1913,11 +1913,23 @@
             </template>
 
           </div>
-
+          <!-- Más capítulos - Spotify -->
+          <div class="flex flex-col items-center gap-2 mt-6 mb-1">
+              <!--<p class="text-brand-beige/50 text-sm font-light tracking-wide">Más capítulos...</p>-->
+                  <a href="https://open.spotify.com/show/6eeOG9zeSqmQs7vSyVmFkv"
+                    target="_blank"
+                    rel="noopener"
+                    class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-[#1DB954]/30 bg-[#1DB954]/10 hover:bg-[#1DB954]/20 hover:border-[#1DB954]/60 transition-all duration-300 group">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="#1DB954" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                    </svg>
+                    <span class="text-[#1DB954] text-sm font-medium tracking-wide group-hover:text-[#1DB954]">Escuchar mas capítulos en Spotify</span>
+                  </a>
+            </div>
           <!-- Disclaimer -->
-          <p class="text-brand-beige/25 text-xs text-center mt-4 font-light">
+          <!--<p class="text-brand-beige/25 text-xs text-center mt-4 font-light">
             Los audios se <code class="text-brand-red/50 bg-brand-red/5 px-1 py-0.5 rounded text-xs">reproduciendo</code> · Formato MP3 recomendado
-          </p>
+          </p>-->
         </div>
 
       </div>
@@ -1930,32 +1942,33 @@
           tracks: [
             {
               id: 1,
-              title: 'Cuando me desean, pero no me eligen',
+              title: 'Me Desean pero NO me Eligen',
               subtitle: 'Episodio 1 · Temporada 1',
-              src: 'assets/audios/Alejandra De La Rosa - Mas Alla del Cuerpo 03-02-2026 005 de Spotify.mp3',
+              src: 'https://anchor.fm/s/1104a14a4/podcast/play/117028591/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2026-2-16%2Ff4fda095-8e52-4731-803f-3c60b7bf390d.mp3',
               durationLabel: '--:--',
             },
             {
               id: 2,
-              title: 'No eres intensa, estás viva',
+              title: 'El hambre de Cariño: Cuando confundimos Deseo con amor',
               subtitle: 'Episodio 2 · Temporada 1',
-              src: 'assets/audios/Alejandra De La Rosa - Mas Alla del Cuerpo 03-03-2026 008 de Spotify.mp3',
+              src: 'https://anchor.fm/s/1104a14a4/podcast/play/117888019/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2026-3-3%2F4f60cd24-afab-c1ec-8fdb-02bc4adb816c.mp3',
               durationLabel: '--:--',
             },
             {
               id: 3,
-              title: 'Cuando la mente quiere, pero el cuerpo no puede',
+              title: 'MNO ME TOQUES ASI, tócame como me siento',
               subtitle: 'Episodio 3 · Temporada 1',
-              src: 'assets/audios/Alejandra De La Rosa - Mas Alla del Cuerpo 09-12-2025 001 de Spotify.mp3',
+              src: 'https://anchor.fm/s/1104a14a4/podcast/play/117887874/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2026-3-3%2F06940606-ab11-cbaa-6ff9-c3126880cdf7.mp3',
               durationLabel: '--:--',
             },
             {
               id: 4,
-              title: 'Mas capitulos...Spotify',
+              title: 'Cuando ya no te excita lo que antes sí: El deseo Cambia',
               subtitle: 'Episodio 4 · Temporada 1',
-              src: 'assets/audios/audio4.mp3',
+              src: 'https://anchor.fm/s/1104a14a4/podcast/play/117880680/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2026-3-3%2Fb7f08bc8-de0e-cb4b-6734-252f82263305.mp3',
               durationLabel: '--:--',
-            },
+            },            
+            
           ],
 
           currentTrack: null,
@@ -2667,7 +2680,7 @@
             <div class="text-xs text-brand-beige/40 tracking-widest uppercase mb-2">Sexualidad</div>
             <h3 class="font-playfair text-white text-lg font-semibold mb-3 leading-snug">Introduccion al BDSM</h3>
             <p class="text-brand-beige/55 text-sm leading-relaxed mb-5">
-              Menos asco, más orgasmos. Tu placer no tiene días libres. Olvida los mitos y aprende a usar tu ciclo como la "gasolina" más potente para tu deseo
+                El BDSM no es lo que te han contado; es el lenguaje de quienes se atreven a perder el control para encontrar su verdadera fuerza. ¿Te atreves a descubrirlo?
             </p>
             <div class="flex items-center justify-between mb-4">
               <div class="flex flex-wrap gap-2">
@@ -3607,9 +3620,7 @@ Es hora de volver a ser cómplices.
                   <div class="soc-handle">PlayTime Podcast</div>
                 </div>
               </a>
-
-            </div>
-            <!-- Telegram -->
+<!-- Telegram -->
               <a href="https://t.me/+584260850765" target="_blank" rel="noopener" class="soc-card">
                 <div class="soc-icon-wrap" style="background:linear-gradient(135deg,#1c93d4 0%,#229ED9 100%);">
                 <svg viewBox="0 0 24 24" width="26" height="26" fill="white" xmlns="http://www.w3.org/2000/svg">
@@ -3621,6 +3632,20 @@ Es hora de volver a ser cómplices.
             <div class="soc-handle">Únete al canal</div>
             </div>
           </a>
+          <!-- Facebook -->
+          <a href="https://www.facebook.com/Playtime.ale/" target="_blank" rel="noopener" class="soc-card">
+            <div class="soc-icon-wrap" style="background:linear-gradient(135deg,#1877F2 0%,#0a5fd8 100%);">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="white" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.268h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+              </svg>
+            </div>
+            <div class="text-center" style="line-height:1.3;">
+            <div class="soc-label">Facebook</div>
+            <div class="soc-handle">Playtime.ale</div>
+            </div>
+          </a>
+            </div>
+            
             <!-- Availability note -->
             <div class="border border-brand-red/15 bg-brand-red/5 rounded-xl p-4 flex items-start gap-3">
               <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse mt-1.5 flex-shrink-0"></div>
